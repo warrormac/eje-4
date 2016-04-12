@@ -44,29 +44,29 @@ int main(){
 			if(op2 != 0.0)
 				push(pop()/op2);
 			else
-				printf("Error: Divisor Cero\n");
+				printf("Error: EL divisor es 0\n");
 			break;
 		case '%':
 			op2 = pop();
 			if(op2 != 0.0)
 				push(fmod(pop(),op2));
 			else
-				printf("Error: Divisor Cero\n");
+				printf("Error: El divisor es 0\n");
 			break;
-		case '?':
+		case 'y':
 			op2=pop();
 			printf("\t%.8g\n",op2);
 			push(op2);
 			break;
-		case 'c':
+		case 'x':
 			clearsp();
 			break;
-		case 'd':
+		case 'a':
 			op2=pop();
 			push(op2);
 			push(op2);
 			break;
-		case 's':
+		case 'b':
 			op1=pop();
 			op2=pop();
 			push(op1);
@@ -90,7 +90,7 @@ void push(double f){
 	if(sp < MAXVAL)
 		val[sp++]=f;
 	else
-		printf("Error: Sobre-Limite %g\n",f);
+		printf("Error: Sobre el limite %g\n",f);
 }
 
 
@@ -166,7 +166,7 @@ int getch(){
 
 void ungetch(int c){
 	if(bufp >= BUFSIZE)
-		printf("Demasiados Caracteres\n");
+		printf("muchos caracteres\n");
 	else
 		buf[bufp++] = c;
 }
