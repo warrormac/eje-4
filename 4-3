@@ -47,7 +47,7 @@ int main(){
 				printf("dividiendo entre 0\n");
 			break;
 		case '\n':
-			printf(".3g\n",pop());
+			printf("  %.7g\n",pop());
 			break;
 		default:
 			printf("error %s\n",s);
