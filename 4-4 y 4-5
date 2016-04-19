@@ -7,7 +7,8 @@
 #define MAXOP 100
 #define NUMBER       0
 #define IDENTIFIER   1
-
+#define MAXVAL 100
+#define BUFSIZE 100
 
 
 int Getop(char s[]);
@@ -82,7 +83,7 @@ int main(void)
    return 0;
 }
 
-#define MAXVAL 100
+
 
 int sp = 0;
 double val[MAXVAL];
@@ -210,7 +211,7 @@ int Getop(char s[])
       return NUMBER;
 }
 
-#define BUFSIZE 100
+
 
 char buf[BUFSIZE];
 int bufp = 0;
