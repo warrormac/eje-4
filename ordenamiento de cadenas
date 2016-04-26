@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <string.h>
+#define MAXLINES 5000
+#define MAXLEN 1000
+#define ALLOCSIZE 1000
+char *lineptr[MAXLINES];
+int readlines(char *lineptr[], int maxlines);
+void writelines(char *lineptr[], int nlines);
+void qsort(char *v[], int left, int right);
+void swap(char *v[], int i, int j);
+char *alloc(int);
+int getline(char s[], int max);
+int main(void)
+{
+    int nlines;
+
+    if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {   //readlines devuelve un entero que es el numero de lineas cadenas y eso se almacena en nlines.
+        qsort(lineptr, 0, nlines-1);          //ordena las cadenas
+        writelines(lineptr, nlines);          //las imprime
+        return 0;
+    } else {
+        printf("error: muy largo para ordenar\n");
+        return 1;
+    }
+}
+
+int readlines(char *lineptr[], int maxlines)
+{
+    int len, nlines;
+    char *p, line[MAXLEN];
+
+    nlines = 0;
+    while ((len = getline(line, MAXLEN)) > 0)    //el getline llena el line[] con lo que escribes y pone en len la longitud de la cadena
+        if (nlines >= maxlines || (p = alloc(len))==NULL)    //si el numero de lineas es mayor al maxlines o la funcion alloc retorn un puntero nulo retorna -1
+            return -1;
+        else {
+            line[len-1] = '\0';          //quita la ultima linea que es el enter.
+            strcpy(p,line);              //copia la linea a p
+            lineptr[nlines++] = p;       //dirige un puntero del array a p
+        }
+    return nlines;                       //Retorna el numero de lineas
+}
+
+void writelines(char *lineptr[], int nlines)
+{
+    int i;
+    for (i = 0; i < nlines; i++)
+        printf("%s\n", lineptr[i]);      //Imprime las lineas que apuntan los punteros del array
+}
+
+int getline(char s[], int max)   //lo del getline ya lo saben
+{
+    int c, i, l;
+
+    for (i = 0, l = 0; (c = getchar()) != EOF && c != '\n'; ++i)
+        if (i < max - 1)
+            s[l++] = c;
+    if (c == '\n' && l < max - 1)
+        s[l++] = c;
+    s[l] = '\0';
+
+    return l;
+}
+static char allocbuf [ALLOCSIZE];    //creamos un allocbuf para
+static char *allocp=allocbuf;        //apuntamos un puntero a allocbuf, antes de usarse la funcion alloc este puntero apunta a la 1ra posicion de allocbuf.
+char *alloc(int n)
+{
+    if(allocbuf+ALLOCSIZE-allocp>=n)    //comprueba si hay suficiente espacio para n
+    {
+        allocp+=n;                      //aumenta el puntero n espacios para comprobar si hay espacion en allocbuf
+        return allocp-n;                //retorna el allocp-n, que seria el valor inicial de allocp.
+    }
+    else
+        return 0;                       //si no hay espacio retorna 0;
+}
+
+void qsort(char *v[], int left, int right)
+{
+    int i, last;
+    void swap(char *v[], int i, int j);
+
+    if (left >= right)
+        return;
+    swap(v, left, (left + right)/2);
+    last = left;
+    for (i = left+1; i <= right; i++)
+        if (strcmp(v[i], v[left]) < 0)
+            swap(v, ++last, i);
+    swap(v, left, last);
+    qsort(v, left, last-1);
+    qsort(v, last+1, right);
+}
+
+
+void swap(char *v[], int i, int j) // el swap lo saben
+{
+    char *temp;
+
+    temp = v[i];
+    v[i] = v[j];
+    v[j] = temp;
+}
